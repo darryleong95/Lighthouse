@@ -1,7 +1,7 @@
 import React from 'react'
 import Cases from './src/screens/Cases.js';
 import CaseDetails from './src/screens/CaseDetails.js';
-import AddCase from './src/screens/AddCase.js';
+import { AddCase } from './src/screens/AddCase.js';
 import { Pending } from './src/screens/Pending';
 import { createStackNavigator } from 'react-navigation-stack';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -12,10 +12,20 @@ const CasesNavigator = createStackNavigator(
         Cases: Cases,
         CaseDetails: CaseDetails,
         AddCase: AddCase
-      },
-      {
+    },
+    {
+        headerMode: 'none',
         initialRouteName: 'Cases',
-      },
+        navigationOptions: ({ navigation }) => {
+            let tabBarVisible = true;
+            if (navigation.state.index > 0) {
+                tabBarVisible = false;
+            }
+            return {
+                tabBarVisible,
+            };
+        },
+    },
 );
 
 export const BottomNavigator = createMaterialBottomTabNavigator({
