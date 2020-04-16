@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, SafeAreaView, StyleSheet, AsyncStorage, Text, TouchableOpacity, ScrollView, FlatList, Image, TouchableNativeFeedback } from 'react-native'
+import { View, SafeAreaView, StyleSheet, AsyncStorage, Text, TouchableOpacity, ScrollView, FlatList, Image, TouchableNativeFeedback, Platform } from 'react-native'
 import { Card, Avatar, Icon, Header } from 'react-native-elements'
 import { useNavigation } from 'react-navigation-hooks'
 import moment from 'moment'
@@ -87,7 +87,11 @@ export const Pending = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Header
-                backgroundColor='#ee6969'
+                statusBarProps={{ translucent: true }}
+                containerStyle={Platform.select({
+                  android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : { height: 100 },
+                })}
+                backgroundColor='#ec5252'
                 centerComponent={{
                     text: 'Pending Approval',
                     style: { color: '#fff', fontSize: 17, fontWeight: 'bold' },

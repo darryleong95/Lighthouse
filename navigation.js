@@ -53,7 +53,7 @@ export const BottomNavigator = createMaterialBottomTabNavigator({
     },
     initialRouteName: 'Cases',
     order: ['Cases', 'Pending'],
-    activeColor: 'darkorange',
+    activeColor: '#ec5252',
     inactiveColor: 'gray',
     barStyle: { backgroundColor: 'white', padding: 0, borderTopColor: '#c7c7c7', borderTopWidth: 0.5 }
 })

@@ -97,7 +97,11 @@ export const AddCase = (props) => {
         <KeyboardAwareScrollView>
             <View style={{ flex: 1 }}>
                 <Header
-                    backgroundColor='#ee6969'
+                    statusBarProps={{ translucent: true }}
+                    containerStyle={Platform.select({
+                        android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : { height: 100 },
+                    })}
+                    backgroundColor='#ec5252'
                     leftComponent={<Icon color="#fff" name="chevron-left" onPress={() => goBack()} />}
                     centerComponent={{
                         text: 'Report New Case',

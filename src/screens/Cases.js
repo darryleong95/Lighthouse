@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   AsyncStorage,
+  Platform,
 } from 'react-native';
 import {
   Card,
@@ -65,10 +66,14 @@ export default class Cases extends React.Component {
     return (
       <View style={{ flex: 1, }}>
         <Header
-          backgroundColor='#ee6969'
+          statusBarProps={{ translucent: true }}
+          containerStyle={Platform.select({
+            android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : { height: 100 },
+          })}
+          backgroundColor='#ec5252'
           centerComponent={{
             text: 'Missing People List',
-            style: { color: '#fff', fontSize: 17, fontWeight: 'bold' },
+            style: { color: '#fff', fontSize: 17, fontWeight: 'bold', alignSelf: 'center' },
           }}
           rightComponent={<Icon color="#fff" name="add" onPress={() => this.props.navigation.navigate('AddCase')} />}
         />
