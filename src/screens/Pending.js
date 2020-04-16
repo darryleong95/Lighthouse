@@ -3,6 +3,9 @@ import { View, SafeAreaView, StyleSheet, AsyncStorage, Text, TouchableOpacity, S
 import { Card, Avatar, Icon, Header } from 'react-native-elements'
 import { useNavigation } from 'react-navigation-hooks'
 import moment from 'moment'
+import axios from 'axios'
+import RNFetchBlob from 'react-native-fetch-blob'
+import ImageResizer from 'react-native-image-resizer'
 
 export const Pending = () => {
 
@@ -10,21 +13,22 @@ export const Pending = () => {
     const [pending, setPending] = useState([])
 
     const doThis = async () => {
+        console.log('doThis()')
         let res = await AsyncStorage.getItem('pending')
         if (res != null) {
             setPending(JSON.parse(res))
+            console.log(JSON.parse(res))
         }
     }
 
     useEffect(() => {
-        let id = setInterval(() => {
-            doThis()
-        }, 1000);
+        doThis()
         return () => clearInterval(id);
     }, [])
 
     const approve = async (index) => {
-        console.log(pending[index])
+        console.log('in here right now')
+        let info = pending[index]
         let active = await AsyncStorage.getItem('cases')
         if (active != null) {
             active = JSON.parse(active)
@@ -39,13 +43,45 @@ export const Pending = () => {
             await AsyncStorage.setItem('pending', JSON.stringify(pending))
             await AsyncStorage.setItem('cases', JSON.stringify(active))
         }
+        let img = info.photo
+        const data = await toBase64(img)
+        let timestamp = info.datetime
+        let text = 'Name: ' + info.name + '\n'
+            + 'Last seen location: ' + info.lastSeenLocation + '\n'
+            + 'Contact: ' + info.pocName + ' at - ' + info.pocContact + '\n'
+            + 'Clothing: ' + info.clothing + '\n'
+            + 'Conditions: ' + info.conditions + '\n'
+            + 'Remarks: ' + info.remarks
+
+        await axios.post('https://37586964.ngrok.io/sendmessage', {
+            text,
+            timestamp,
+            from: 'Admin',
+            img: data
+        }).then(response => {
+            console.log('response: ', response.data)
+        }).catch(error => {
+            console.log('error: ', error)
+        })
         doThis()
         navigate('Cases')
     }
 
-    const reject = (index) => {
-        test.push(2)
-        console.log(test)
+    const toBase64 = async (uri) => {
+        return ImageResizer.createResizedImage(uri, 800, 600, "JPEG", 80, 360)
+            .then(async ({ uri, path }) => {
+                return RNFetchBlob.fs
+                    .readFile(path, "base64")
+                    .then(data => {
+                        return data
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }).catch(err => {
+                console.log(err)
+                return Alert.alert('Unable to resize the photo', 'Please try again!')
+            })
     }
 
     return (
@@ -107,8 +143,7 @@ export const Pending = () => {
                                                     <Text style={{ color: 'white' }}>Approve</Text>
                                                 </View>
                                             </TouchableNativeFeedback>
-                                            <TouchableNativeFeedback
-                                                onPress={() => reject(index)}>
+                                            <TouchableNativeFeedback>
                                                 <View style={{ height: 50, width: '45%', backgroundColor: 'red', alignItems: 'center', justifyContent: 'center' }}>
                                                     <Text style={{ color: 'white' }}>Reject</Text>
                                                 </View>

@@ -87,7 +87,7 @@ export const AddCase = (props) => {
         let pending = await AsyncStorage.getItem("pending")
         let data = pending == null ? data = [] : JSON.parse(pending)
         data.push(content)
-        console.log(data)
+        console.log('Data: ', data)
         await AsyncStorage.setItem("pending", JSON.stringify(data))
         dispatch(resetAction)
         navigate('Pending')
