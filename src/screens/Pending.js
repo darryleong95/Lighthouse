@@ -23,7 +23,7 @@ export const Pending = () => {
 
     useEffect(() => {
         doThis()
-        return () => clearInterval(id);
+        // return () => clearInterval(id);
     }, [])
 
     const approve = async (index) => {
@@ -89,7 +89,7 @@ export const Pending = () => {
             <Header
                 statusBarProps={{ translucent: true }}
                 containerStyle={Platform.select({
-                  android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : { height: 100 },
+                    android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : { height: 100 },
                 })}
                 backgroundColor='#ec5252'
                 centerComponent={{
@@ -103,7 +103,7 @@ export const Pending = () => {
                     data={pending}
                     renderItem={({ item, index }) => {
                         return (
-                            <Card containerStyle={{ flex: 1 }}>
+                            <Card containerStyle={{ flex: 1, elevation: 0, borderWidth: 0, borderRadius: 5 }}>
                                 <View
                                     style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
                                     <View style={{ width: '80%', height: 300 }}>
@@ -114,41 +114,45 @@ export const Pending = () => {
                                     </View>
                                     <View style={{ width: '80%' }}>
                                         <View style={{ flexDirection: 'column', paddingVertical: 5 }}>
-                                            <Text style={{ paddingVertical: 3, fontSize: 16, fontWeight: 'bold' }}>
+                                            <Text style={{ paddingVertical: 3, fontSize: 16, fontFamily: 'AirbnbCereal-Medium' }}>
                                                 {item.name}
                                             </Text>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <Text>Age: </Text>
-                                                <Text>{item.age}</Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Medium' }}>Age: </Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Book' }}>{item.age}</Text>
                                             </View>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <Text>Conditions: </Text>
-                                                <Text>{item.conditions}</Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Medium' }}>Conditions: </Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Book' }}>{item.conditions}</Text>
                                             </View>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <Text>Remarks: </Text>
-                                                <Text>{item.remarks}</Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Medium' }}>Remarks: </Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Book' }}>{item.remarks}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={{ flexDirection: 'column', paddingVertical: 10 }}>
+                                            <Text style={{ fontSize: 16, fontFamily: 'AirbnbCereal-Medium', color: '#2a2a2a' }}>Last Seen</Text>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3 }}>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Book', fontSize: 14 }}>{item.lastSeenLocation}</Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Book', fontSize: 14 }}>{moment(item.datetime).format('D/MMM/YYYY h:mm a')}</Text>
                                             </View>
                                         </View>
                                         <View style={{ flexDirection: 'column', paddingVertical: 5 }}>
-                                            <Text style={{ paddingVertical: 3, fontSize: 16, fontWeight: 'bold' }}>Last Seen: </Text>
-                                            <Text>{item.lastSeenLocation}</Text>
-                                            <Text>{moment(item.datetime).format('D/MMM/YYYY h:mm a')}</Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'column', paddingVertical: 5 }}>
-                                            <Text style={{ paddingVertical: 3, fontSize: 16, fontWeight: 'bold' }}>POC: </Text>
-                                            <Text>{item.pocName}</Text>
-                                            <Text>{item.pocContact}</Text>
+                                            <Text style={{ fontSize: 16, fontFamily: 'AirbnbCereal-Medium', color: '#2a2a2a' }}>Point of Contact</Text>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 3 }}>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Medium', fontSize: 14 }}>{item.pocName}</Text>
+                                                <Text style={{ fontFamily: 'AirbnbCereal-Book', fontSize: 14 }}>{item.pocContact}</Text>
+                                            </View>
                                         </View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                                             <TouchableNativeFeedback
                                                 onPress={() => approve(index)}>
-                                                <View style={{ height: 50, width: '45%', backgroundColor: 'green', alignItems: 'center', justifyContent: 'center' }}>
+                                                <View style={{ height: 50, width: '45%', backgroundColor: '#529fec', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
                                                     <Text style={{ color: 'white' }}>Approve</Text>
                                                 </View>
                                             </TouchableNativeFeedback>
                                             <TouchableNativeFeedback>
-                                                <View style={{ height: 50, width: '45%', backgroundColor: 'red', alignItems: 'center', justifyContent: 'center' }}>
+                                                <View style={{ height: 50, width: '45%', backgroundColor: '#ec5252', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
                                                     <Text style={{ color: 'white' }}>Reject</Text>
                                                 </View>
                                             </TouchableNativeFeedback>

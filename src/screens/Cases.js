@@ -22,6 +22,7 @@ import moment from 'moment';
 import axios from 'axios'
 
 import file from '../../data/sample.json'
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 export default class Cases extends React.Component {
   static navigationOptions = {
@@ -37,6 +38,7 @@ export default class Cases extends React.Component {
 
   componentDidMount = async () => {
     console.log('mounting...')
+    // await AsyncStorage.removeItem('pending')
     await AsyncStorage.removeItem("cases")
     this.poll()
     this.startPoll()
@@ -73,9 +75,13 @@ export default class Cases extends React.Component {
           backgroundColor='#ec5252'
           centerComponent={{
             text: 'Missing People List',
-            style: { color: '#fff', fontSize: 17, fontWeight: 'bold', alignSelf: 'center' },
+            style: { color: '#fff', fontSize: 17, alignSelf: 'center', fontFamily: 'AirbnbCereal-Medium' },
           }}
-          rightComponent={<Icon color="#fff" name="add" onPress={() => this.props.navigation.navigate('AddCase')} />}
+          rightComponent={
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('AddCase')}>
+              <Icon color="#fff" name="add" />
+            </TouchableOpacity>
+          }
         />
         <ScrollView>
           <FlatList
@@ -86,7 +92,7 @@ export default class Cases extends React.Component {
                   onPress={() =>
                     this.props.navigation.navigate('CaseDetails', { item: item })
                   }>
-                  <Card containerStyle={{ flex: 1 }}>
+                  <Card containerStyle={{ elevation: 0, backgroundColor: 'white', borderWidth: 0, borderRadius: 10, paddingVertical: 20 }}>
                     <View
                       style={{
                         flexDirection: 'row',
@@ -106,25 +112,27 @@ export default class Cases extends React.Component {
                           style={{
                             fontSize: 16,
                             fontWeight: 'bold',
-                            marginBottom: 8,
+                            marginBottom: 2,
+                            fontFamily: 'AirbnbCereal-Medium',
+                            color: '#2a2a2a'
                           }}>
                           {item.name}
                         </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text>Age: </Text>
-                          <Text>{item.age}</Text>
+                        <View style={{ flexDirection: 'row', marginVertical: 2 }}>
+                          <Text style={{ fontFamily: 'AirbnbCereal-Medium' }}>Age: </Text>
+                          <Text style={{ fontFamily: 'AirbnbCereal-Book' }}>{item.age}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text>Conditions: </Text>
-                          <Text>{item.conditions}</Text>
+                        <View style={{ flexDirection: 'row', marginVertical: 2 }}>
+                          <Text style={{ fontFamily: 'AirbnbCereal-Medium' }}>Conditions: </Text>
+                          <Text style={{ fontFamily: 'AirbnbCereal-Book' }}>{item.conditions}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text>Last Seen: </Text>
-                          <Text>{item.lastSeenLocation}</Text>
+                        <View style={{ flexDirection: 'row', marginVertical: 2 }}>
+                          <Text style={{ fontFamily: 'AirbnbCereal-Medium' }}>Last Seen: </Text>
+                          <Text style={{ fontFamily: 'AirbnbCereal-Book' }}>{item.lastSeenLocation}</Text>
                         </View>
                       </View>
-                      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-                        <Icon name="chevron-right" />
+                      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                        <Icon name="chevron-right" containerStyle={{ alignSelf: 'flex-end' }} color="#ec5252" />
                       </View>
                     </View>
                   </Card>

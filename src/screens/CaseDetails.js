@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, Linking, } from 'react-native';
+import { View, Text, Image, ScrollView, Linking, Platform, Dimensions, } from 'react-native';
 import { Card, ListItem, Header, Icon } from 'react-native-elements';
 import moment from 'moment';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class CaseDetails extends React.Component {
   static navigationOptions = {
@@ -26,71 +27,74 @@ export default class CaseDetails extends React.Component {
             android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : { height: 100 },
           })}
           backgroundColor='#ec5252'
-          leftComponent={<Icon color="#fff" name="chevron-left" onPress={() => this.props.navigation.pop()} />}
+          leftComponent={
+            <TouchableOpacity onPress={this.props.navigation.pop} >
+              <Icon color="#fff" name="chevron-left" />
+            </TouchableOpacity>
+          }
           centerComponent={{
             text: 'Case Report',
-            style: { color: '#fff', fontSize: 17, fontWeight: 'bold' },
+            style: { color: '#fff', fontSize: 17, fontFamily: 'AirbnbCereal-Medium' },
           }}
         />
         <ScrollView>
-          {this.state.item && <Card containerStyle={{ flex: 1, marginBottom: 10, borderWidth: 2, padding: 5 }} >
+          {this.state.item && <Card containerStyle={{ flex: 1, marginBottom: 10, borderWidth: 2, padding: 0, elevation: 0, borderWidth: 0, borderRadius: 5, paddingBottom: 10 }} >
             <Image
-              style={{ height: 275, margin: 10 }}
+              style={{ width: '100%', height: Dimensions.get('window').width, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
               resizeMode="cover"
               source={{ uri: this.state.item.photo }}
             />
             <ListItem
               title="Name"
-              titleStyle={{ fontWeight: 'bold', marginBottom: 5 }}
+              titleStyle={{ marginBottom: 5, fontFamily: 'AirbnbCereal-Medium' }}
               subtitle={this.state.item.name}
-              subtitleStyle={{ color: 'grey' }}
+              subtitleStyle={{ color: '#6f6f6f', fontFamily: 'AirbnbCereal-Book' }}
               rightSubtitle={"Age: " + this.state.item.age}
-              bottomDivider
+              rightSubtitleStyle={{ fontFamily: 'AirbnbCereal-Book' }}
             />
-            {/* <ListItem
-            title="Age"
-            titleStyle={{fontWeight:'bold',}}
-            rightTitle={this.state.item.age}
-            bottomDivider
-          /> */}
+            <HR />
             <ListItem
               title="Conditions"
-              titleStyle={{ fontWeight: 'bold', }}
+              titleStyle={{ fontFamily: 'AirbnbCereal-Medium', fontSize: 15 }}
               rightTitle={this.state.item.conditions}
-              bottomDivider
+              rightTitleStyle={{ fontFamily: 'AirbnbCereal-Book', fontSize: 15 }}
             />
+            <HR />
             <ListItem
               title="Last Seen @"
-              titleStyle={{ fontWeight: 'bold', marginBottom: 5 }}
-              subtitle={this.state.item.lastSeenLocation + "\nTime: " + moment(this.state.item.datetime).format('DD-MM-YYYY h:mm a')}
-              subtitleStyle={{ color: 'grey' }}
-              bottomDivider
+              titleStyle={{ fontFamily: 'AirbnbCereal-Medium', fontSize: 15, marginBottom: 5 }}
+              subtitle={
+                <Text style={{ color: '#6f6f6f', fontFamily: 'AirbnbCereal-Book', marginVertical: 2 }}>
+                  <Text style={{ color: '#2a2a2a', fontFamily: 'AirbnbCereal-Medium' }}>Location:  </Text>
+                  {this.state.item.lastSeenLocation}
+                  <Text style={{ color: '#2a2a2a', fontFamily: 'AirbnbCereal-Medium' }}>{'\n'}Time:  </Text>
+                  {moment(this.state.item.datetime).format('DD/MMM/YYYY h:mm a')}
+                </Text>}
             />
+            <HR />
             <ListItem
               title="Clothing"
-              titleStyle={{ fontWeight: 'bold', marginBottom: 5 }}
+              titleStyle={{ fontFamily: 'AirbnbCereal-Medium', fontSize: 15, marginBottom: 5 }}
               subtitle={this.state.item.clothing}
-              subtitleStyle={{ color: 'grey' }}
-              bottomDivider
+              subtitleStyle={{ color: '#6f6f6f', fontFamily: 'AirbnbCereal-Book', fontSize: 14 }}
             />
+            <HR />
             <ListItem
               title="Remarks"
-              titleStyle={{ fontWeight: 'bold', marginBottom: 5 }}
+              titleStyle={{ fontFamily: 'AirbnbCereal-Medium', fontSize: 15, marginBottom: 5 }}
               subtitle={this.state.item.remarks}
-              subtitleStyle={{ color: 'grey' }}
-              bottomDivider
+              subtitleStyle={{ color: '#6f6f6f', fontFamily: 'AirbnbCereal-Book' }}
             />
+            <HR />
             <ListItem
               title="POC"
-              titleStyle={{ fontWeight: 'bold', marginBottom: 5 }}
-              // rightTitle={this.state.item.pocName}
-              // rightSubtitle={this.state.item.pocContact}
+              titleStyle={{ fontFamily: 'AirbnbCereal-Medium', fontSize: 15, marginBottom: 5 }}
               subtitle={this.state.item.pocName}
               rightSubtitle={this.state.item.pocContact}
+              rightSubtitleStyle={{ fontFamily: 'AirbnbCereal-Book', color: '#2a2a2a' }}
               onPress={() => Linking.openURL(`tel:${this.state.item.pocContact}`)
               }
             />
-
           </Card>}
         </ScrollView>
 
@@ -98,4 +102,10 @@ export default class CaseDetails extends React.Component {
       </View>
     )
   }
+}
+
+const HR = () => {
+  return (
+    <View style={{ width: '90%', borderBottomWidth: 0.5, borderColor: '#c6c6c6', alignSelf: 'center' }} />
+  )
 }
